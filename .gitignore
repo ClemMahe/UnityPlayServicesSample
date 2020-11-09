@@ -1,0 +1,17 @@
+#Ignore Unity general folders
+obj/
+Temp/
+Library/
+Logs/
+.vscode/
+
+#Ignore keystore for security concerns
+*.keystore
+
+#Ignore project conf files
+*.sln
+*.csproj
+*.app
+
+#Ignore generated cubemaps as they are heavy
+*.cubemap
