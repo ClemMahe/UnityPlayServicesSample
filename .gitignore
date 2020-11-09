@@ -15,3 +15,7 @@ Logs/
 
 #Ignore generated cubemaps as they are heavy
 *.cubemap
+
+#Ignore other generated resources
+*.mat
+*.meta
