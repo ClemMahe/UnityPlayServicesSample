@@ -24,8 +24,6 @@ namespace SpaceScavengersSocial
                 config = new PlayGamesClientConfiguration.Builder()
                     .EnableSavedGames()
                     .RequestEmail()
-                    .RequestServerAuthCode(false)
-                    .RequestIdToken()
                     .Build();
                 PlayGamesPlatform.InitializeInstance(config);
                 PlayGamesPlatform.DebugLogEnabled = true;
@@ -46,6 +44,10 @@ namespace SpaceScavengersSocial
             #else
                 throw new Exception("Platform not valid");
             #endif  
+        }
+
+        public void disconnectUser(){
+            ((GooglePlayGames.PlayGamesPlatform) Social.Active).SignOut();
         }
     }
 }

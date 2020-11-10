@@ -32,5 +32,7 @@ public class DebugScreen : MonoBehaviour
     }
 
     public void disconnectPlayServices(){
+        Debug.Log("disconnectPlayServices button called");
+        socialServices.disconnectUser();  
     }
 }

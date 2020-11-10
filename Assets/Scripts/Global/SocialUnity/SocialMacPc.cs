@@ -13,5 +13,9 @@ namespace SpaceScavengersSocial
         public  void connectUser(){
             Debug.Log("Connect user desktop");
         }
+
+        public void disconnectUser(){
+            Debug.Log("Disconnect user desktop");
+        }
     }
 }
