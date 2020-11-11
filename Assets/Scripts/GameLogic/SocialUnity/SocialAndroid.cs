@@ -29,7 +29,7 @@ namespace SpaceScavengersSocial
                 playGamesPlatform = PlayGamesPlatform.Activate();
             #endif
         }
-
+        
         public  void connectUser(){
             #if UNITY_ANDROID
                 Social.Active.localUser.Authenticate((bool success) =>
