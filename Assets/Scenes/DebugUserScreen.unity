@@ -384,6 +384,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: SaveGame
       objectReference: {fileID: 0}
+    - target: {fileID: 7309461920876716359, guid: 4ef0fa19bcf8a416bbeabee12dbe77a6,
+        type: 3}
+      propertyPath: m_Interactable
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4ef0fa19bcf8a416bbeabee12dbe77a6, type: 3}
 --- !u!224 &159929087 stripped
@@ -792,6 +797,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: IncreaseShipLevel
       objectReference: {fileID: 0}
+    - target: {fileID: 7309461920876716359, guid: 4ef0fa19bcf8a416bbeabee12dbe77a6,
+        type: 3}
+      propertyPath: m_Interactable
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4ef0fa19bcf8a416bbeabee12dbe77a6, type: 3}
 --- !u!224 &1085423197 stripped
@@ -924,6 +934,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Disconnect
+      objectReference: {fileID: 0}
+    - target: {fileID: 7309461920876716359, guid: 4ef0fa19bcf8a416bbeabee12dbe77a6,
+        type: 3}
+      propertyPath: m_Interactable
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4ef0fa19bcf8a416bbeabee12dbe77a6, type: 3}
@@ -1061,7 +1076,7 @@ PrefabInstance:
     - target: {fileID: 7309461920876716359, guid: 4ef0fa19bcf8a416bbeabee12dbe77a6,
         type: 3}
       propertyPath: m_Interactable
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4ef0fa19bcf8a416bbeabee12dbe77a6, type: 3}
