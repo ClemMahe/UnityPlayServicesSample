@@ -22,9 +22,19 @@ public class GameManager
         return gameManagerInstance;
     }
 
+    public void LoadCloudSave(){
+        if(isUserConnected()){
+        }
+    }
+    public void SaveCloud(){
+        //TODO Save impl
+    }
+
     public void increaseShipLevel(){
         //Save
+        playerData.playerLevel = playerData.playerLevel+1;
         playerData.SaveToDisk();
+        SaveCloud();
     }
     public int getShipLevel(){
         return playerData.playerLevel;

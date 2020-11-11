@@ -9,6 +9,7 @@ public class DebugScreen : MonoBehaviour
     public GameManager gameManager;
     
     public Button btnPlayConnect, btnPlayDisconnect, btnIncreaseShipLevel;
+    public Text textPlayer;
 
     void Start()
     {
@@ -17,18 +18,27 @@ public class DebugScreen : MonoBehaviour
         btnPlayDisconnect.onClick.AddListener(disconnectPlayServices);
         btnIncreaseShipLevel.onClick.AddListener(increaseShipLevel);
         gameManager = GameManager.getInstance();
-        InitSocial();
+        Init();
     }
 
-    void InitSocial(){
-        if(gameManager.isUserConnected()){
-            updateButtonsState(true);
-        }
+    void Init(){      
+        updateButtonsState(gameManager.isUserConnected());
+        //need to establish a strategy regarding cloud/local sync
+        gameManager.LoadCloudSave();
     }
 
     // Update is called once per frame
     void Update()
     {
+        int playerLevel = gameManager.getShipLevel();
+        string textToUpdate = "Player level : "+playerLevel+"\n";
+        if(gameManager.isUserConnected()){
+            textToUpdate+= "CloudState connected";
+        }else{
+            textToUpdate+= "CloudState disconnected";
+        }
+        //Update text
+        textPlayer.text = textToUpdate;
     }
 
     public void connectPlayServices(){
@@ -36,8 +46,7 @@ public class DebugScreen : MonoBehaviour
         gameManager.connectUser((isConnected)=>{
             if(isConnected){
                 updateButtonsState(true);
-                //TODO save state locally
-                //TODO updateUI
+                gameManager.LoadCloudSave();
             }
         });
     }
@@ -57,4 +66,5 @@ public class DebugScreen : MonoBehaviour
         btnPlayConnect.interactable = !isUserConnected;
         btnPlayDisconnect.interactable = isUserConnected;
     }
+    
 }
