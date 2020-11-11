@@ -1058,6 +1058,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: RetrieveSavedGame
       objectReference: {fileID: 0}
+    - target: {fileID: 7309461920876716359, guid: 4ef0fa19bcf8a416bbeabee12dbe77a6,
+        type: 3}
+      propertyPath: m_Interactable
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4ef0fa19bcf8a416bbeabee12dbe77a6, type: 3}
 --- !u!224 &1264150193 stripped
@@ -1407,6 +1412,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Connect
+      objectReference: {fileID: 0}
+    - target: {fileID: 7309461920876716359, guid: 4ef0fa19bcf8a416bbeabee12dbe77a6,
+        type: 3}
+      propertyPath: m_Interactable
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4ef0fa19bcf8a416bbeabee12dbe77a6, type: 3}
