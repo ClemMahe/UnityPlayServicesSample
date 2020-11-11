@@ -18,7 +18,6 @@ namespace SpaceScavengersSocial
             public PlayGamesClientConfiguration config;
         #endif
 
-
         public SocialAndroid(){   
             #if UNITY_ANDROID
                 config = new PlayGamesClientConfiguration.Builder()
