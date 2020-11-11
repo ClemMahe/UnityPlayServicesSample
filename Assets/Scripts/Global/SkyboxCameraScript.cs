@@ -10,7 +10,6 @@ public class SkyboxCameraScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Debug.Log("HelloClem");
     }
 
     // Update is called once per frame
