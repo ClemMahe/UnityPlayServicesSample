@@ -1,9 +1,10 @@
-#Ignore Unity general folders
+#Ignore Unity generated folders
 obj/
 Temp/
 Library/
 Logs/
 .vscode/
+Assets/ExternalDependencyManager/
 
 #Ignore keystore for security concerns
 *.keystore
