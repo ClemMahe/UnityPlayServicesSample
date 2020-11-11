@@ -6,5 +6,6 @@ namespace SpaceScavengersSocial
     {
         void connectUser(SocialCallbackAuthentication successResult);
         void disconnectUser();
+        bool isUserConnected();
     }
 }

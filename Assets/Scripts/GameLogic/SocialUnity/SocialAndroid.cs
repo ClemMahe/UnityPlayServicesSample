@@ -46,5 +46,9 @@ namespace SpaceScavengersSocial
         public void disconnectUser(){
             ((GooglePlayGames.PlayGamesPlatform) Social.Active).SignOut();
         }
+
+        public bool isUserConnected(){
+            return Social.Active.localUser.authenticated;
+        }
     }
 }

@@ -18,5 +18,9 @@ namespace SpaceScavengersSocial
         public void disconnectUser(){
             Debug.Log("SocialMacPc, Disconnection : No social network configured for PC/Mac");
         }
+
+        public bool isUserConnected(){
+            return true ; //Debug purpose -> true
+        }
     }
 }
