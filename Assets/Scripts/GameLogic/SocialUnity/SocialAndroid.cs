@@ -30,15 +30,13 @@ namespace SpaceScavengersSocial
             #endif
         }
         
-        public  void connectUser(){
+        public void connectUser(SocialCallbackAuthentication successResultCallback){
+            Debug.Log("SocialAndroid, Connection : Started"); 
             #if UNITY_ANDROID
-                Social.Active.localUser.Authenticate((bool success) =>
+                Social.Active.localUser.Authenticate((bool successResult) =>
                 {
-                    if (success){ 
-                        Debug.Log("Authenticate success"); 
-                    }else{
-                        Debug.Log("Authenticate failure");
-                    }
+                    Debug.Log("SocialAndroid, ConnectionResult : "+successResult); 
+                    successResultCallback.Invoke(successResult);
                 });
             #else
                 throw new Exception("Platform not valid");

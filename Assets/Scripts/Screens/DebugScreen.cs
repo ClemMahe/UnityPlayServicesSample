@@ -8,12 +8,13 @@ public class DebugScreen : MonoBehaviour
 {
     public ISocialServices socialServices;
     
-    public Button playConnect, playDisconnect, getSavedState, increaseShipLevel, saveGameState;
+    public Button btnPlayConnect, btnPlayDisconnect, btnIncreaseShipLevel;
 
     void Start()
     {
-        playConnect.onClick.AddListener(connectPlayServices);
-        playDisconnect.onClick.AddListener(disconnectPlayServices);
+        btnPlayConnect.onClick.AddListener(connectPlayServices);
+        btnPlayDisconnect.onClick.AddListener(disconnectPlayServices);
+        btnIncreaseShipLevel.onClick.AddListener(increaseShipLevel);
         initPlaygamesPlatform();
     }
 
@@ -28,11 +29,30 @@ public class DebugScreen : MonoBehaviour
 
     public void connectPlayServices(){
         Debug.Log("connectPlayServices button called");
-        socialServices.connectUser();
+        socialServices.connectUser((isConnected)=>{
+            if(isConnected){
+                updateButtonsState(true);
+                //TODO save state locally
+                //TODO updateUI
+            }
+        });
     }
 
     public void disconnectPlayServices(){
         Debug.Log("disconnectPlayServices button called");
-        socialServices.disconnectUser();  
+        socialServices.disconnectUser();
+        updateButtonsState(false);
+        //TODO remove user/state & everything
+        //TODO updateUI
+    }
+
+    public void increaseShipLevel(){
+        
+    }
+
+    public void updateButtonsState(bool isUserConnected){
+        btnPlayConnect.interactable = !isUserConnected;
+        btnPlayDisconnect.interactable = isUserConnected;
+        btnIncreaseShipLevel.interactable = isUserConnected;
     }
 }

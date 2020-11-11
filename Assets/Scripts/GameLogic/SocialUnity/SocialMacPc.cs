@@ -10,12 +10,13 @@ namespace SpaceScavengersSocial
         public SocialMacPc(){
         }
 
-        public  void connectUser(){
-            Debug.Log("Connect user desktop");
+        public void connectUser(SocialCallbackAuthentication successResultCallback){
+            Debug.Log("SocialMacPc, Connection : No social network configured for PC/Mac");
+            successResultCallback.Invoke(true); //Debug purpose -> true
         }
 
         public void disconnectUser(){
-            Debug.Log("Disconnect user desktop");
+            Debug.Log("SocialMacPc, Disconnection : No social network configured for PC/Mac");
         }
     }
 }
