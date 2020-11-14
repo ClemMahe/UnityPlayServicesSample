@@ -69,6 +69,7 @@ public class DebugScreen : MonoBehaviour
     public void UpdateButtonsState(bool isUserConnected){
         btnPlayConnect.interactable = !isUserConnected;
         btnPlayDisconnect.interactable = isUserConnected;
+        btnLeaderboard.interactable = isUserConnected;
     }
     
 
