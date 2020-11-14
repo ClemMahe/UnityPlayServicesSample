@@ -38,7 +38,7 @@ public class PlayerData : ISaveGame
     {
         PlayerPrefs.SetString(SAVE_KEY, ToString());
     }
-    public ISaveGame BytesToObject(byte[] b){
+    public static PlayerData BytesToObject(byte[] b){
         return PlayerData.FromString(System.Text.ASCIIEncoding.Default.GetString(b));
     }
     public byte[] ObjectToBytes(){

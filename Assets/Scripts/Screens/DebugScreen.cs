@@ -23,7 +23,6 @@ public class DebugScreen : MonoBehaviour
 
     void Init(){      
         updateButtonsState(gameManager.isUserConnected());
-        //need to establish a strategy regarding cloud/local sync
         gameManager.LoadCloudSave();
     }
 

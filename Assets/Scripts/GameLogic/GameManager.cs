@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System;
 using UnityEngine;
 using SpaceScavengersSocial;
 
@@ -23,11 +22,27 @@ public class GameManager
     }
 
     public void LoadCloudSave(){
-        if(isUserConnected()){
+        if(isUserConnected()){ //Already handled inside Social methods, but game can implement its own way
+            socialServices.loadGame((ESocialCloudState loadState, byte[] genericGameSave) =>{
+                if(loadState==ESocialCloudState.ESocialCloudState_Completed && genericGameSave.Length>0){
+                    try{
+                        PlayerData cloudPdata = PlayerData.BytesToObject(genericGameSave);
+                        playerData.MergeLocalWithCloud(cloudPdata);
+                    }catch(Exception){
+                        //Handle failure cases
+                    }
+                }
+            });
         }
     }
     public void SaveCloud(){
-        //TODO Save impl
+        if(isUserConnected()){
+            socialServices.saveGame(playerData,(ESocialCloudState saveState)=>{
+                if(saveState!=ESocialCloudState.ESocialCloudState_Completed){
+                    //Handle failure cases
+                }
+            });
+        }
     }
 
     public void increaseShipLevel(){
@@ -39,7 +54,6 @@ public class GameManager
     public int getShipLevel(){
         return playerData.playerLevel;
     }
-
     public void connectUser(SocialCallbackAuthentication successResult){
         socialServices.connectUser(successResult);
     }
@@ -51,6 +65,4 @@ public class GameManager
         return socialServices.isUserConnected();
     }
     
-
-
 }
