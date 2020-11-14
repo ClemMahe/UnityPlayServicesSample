@@ -1,22 +1,29 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using SpaceScavengersSocial;
 
-public class PlayerData 
+public class PlayerData : ISaveGame
 {
     private const string SAVE_KEY = "spacescavengers-save";
     private const string CURRENT_VERSION = "SCv1";
 
     public int playerLevel;
-
-
     public PlayerData(){
     }
-
     public void increaseLevel(){
         playerLevel++;
     }
 
+
+    public bool MergeLocalWithCloud(PlayerData cloudGame){
+        //In this version we will keep a simple version
+        bool mergeNeeded = false;
+        if(this.playerLevel < cloudGame.playerLevel){
+            this.playerLevel = cloudGame.playerLevel;   
+        }
+        return mergeNeeded;
+    }
 
     public static PlayerData LoadFromDisk()
     {
@@ -31,10 +38,10 @@ public class PlayerData
     {
         PlayerPrefs.SetString(SAVE_KEY, ToString());
     }
-    public static PlayerData FromBytes(byte[] b){
+    public ISaveGame BytesToObject(byte[] b){
         return PlayerData.FromString(System.Text.ASCIIEncoding.Default.GetString(b));
     }
-    public byte[] ToBytes(){
+    public byte[] ObjectToBytes(){
         return System.Text.ASCIIEncoding.Default.GetBytes(ToString());
     }
     public override string ToString(){

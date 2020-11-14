@@ -22,5 +22,13 @@ namespace SpaceScavengersSocial
         public bool isUserConnected(){
             return true ; //Debug purpose -> true
         }
+
+        public void saveGame(ISaveGame objectToSave, SocialCallbackSaveGame saveDelegate){
+            saveDelegate.Invoke(ESocialCloudState.ESocialCloudState_NotSupportedByPlatform);
+        }
+
+        public void loadGame(SocialCallbackLoadGame loadDelegate){
+            loadDelegate.Invoke(ESocialCloudState.ESocialCloudState_NotSupportedByPlatform, null);
+        }
     }
 }

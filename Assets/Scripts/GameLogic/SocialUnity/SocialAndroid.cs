@@ -5,12 +5,14 @@ using UnityEngine.SocialPlatforms;
 #if UNITY_ANDROID
     using GooglePlayGames;
     using GooglePlayGames.BasicApi;
+    using GooglePlayGames.BasicApi.SavedGame;
 #endif
 
 namespace SpaceScavengersSocial
 {
     public  class SocialAndroid : ISocialServices
     {
+        public const string CLOUD_SAVE_FILENAME = "cloudsave-android";
 
         //SocialAndroid variables
         #if UNITY_ANDROID
@@ -49,6 +51,67 @@ namespace SpaceScavengersSocial
 
         public bool isUserConnected(){
             return Social.Active.localUser.authenticated;
+        }
+
+        public void saveGame(ISaveGame objectToSave, SocialCallbackSaveGame saveDelegate){
+            if(isUserConnected()){
+                //TODO Implement Async. StartCoroutine?UniTask?
+                ((PlayGamesPlatform)Social.Active).SavedGame.OpenWithAutomaticConflictResolution(CLOUD_SAVE_FILENAME, 
+                    DataSource.ReadCacheOrNetwork, 
+                    ConflictResolutionStrategy.UseLongestPlaytime, 
+                    (SavedGameRequestStatus s, ISavedGameMetadata m)=> SaveGameProcessing(s,m,objectToSave,saveDelegate));
+            }else{
+                saveDelegate.Invoke(ESocialCloudState.ESocialCloudState_NotAuthenticated);
+            }
+        }
+        public void loadGame(SocialCallbackLoadGame loadDelegate){
+            if(isUserConnected()){
+                //TODO Implement Async. StartCoroutine?UniTask?
+                ((PlayGamesPlatform)Social.Active).SavedGame.OpenWithAutomaticConflictResolution(CLOUD_SAVE_FILENAME,
+                    DataSource.ReadCacheOrNetwork,
+                    ConflictResolutionStrategy.UseLongestPlaytime,
+                    (SavedGameRequestStatus s, ISavedGameMetadata m)=> LoadGameProcessing(s,m,loadDelegate));
+            }else{
+                loadDelegate.Invoke(ESocialCloudState.ESocialCloudState_NotAuthenticated,null);
+            }
+        }
+
+        private void SaveGameProcessing(SavedGameRequestStatus status, ISavedGameMetadata metaData, 
+            ISaveGame game, SocialCallbackSaveGame saveResult){
+            if (status == SavedGameRequestStatus.Success){
+                byte[] data = game.ObjectToBytes();
+                SavedGameMetadataUpdate.Builder builder = new SavedGameMetadataUpdate.Builder();
+                SavedGameMetadataUpdate updatedMetadata = builder.Build();
+                ((PlayGamesPlatform)Social.Active).SavedGame.CommitUpdate(metaData, updatedMetadata, data,
+                    //Lamda Result
+                    (SavedGameRequestStatus statusCommit, ISavedGameMetadata metaDataCommit)=>{
+                        if(statusCommit == SavedGameRequestStatus.Success){
+                            saveResult.Invoke(ESocialCloudState.ESocialCloudState_Completed);
+                        }else{
+                            saveResult.Invoke(ESocialCloudState.ESocialCloudState_Failure_CannotSaveGame);
+                        }
+                    });
+            }else{
+                saveResult.Invoke(ESocialCloudState.ESocialCloudState_Failure_CannotOpenSavedGame);
+            }
+        }
+
+        private void LoadGameProcessing(SavedGameRequestStatus status, ISavedGameMetadata metaData, 
+           SocialCallbackLoadGame loadResult){
+            if (status == SavedGameRequestStatus.Success){
+                ((PlayGamesPlatform)Social.Active).SavedGame.ReadBinaryData(metaData, 
+                    //Lamda Result
+                    (SavedGameRequestStatus statusReading, byte[] bytes)=>{
+                        if(statusReading == SavedGameRequestStatus.Success){
+                            loadResult.Invoke(ESocialCloudState.ESocialCloudState_Completed, bytes);
+                        }else{
+                            loadResult.Invoke(ESocialCloudState.ESocialCloudState_Failure_CannotLoadGame, null);
+                        }
+                    }
+                );
+            }else{
+                loadResult.Invoke(ESocialCloudState.ESocialCloudState_Failure_CannotOpenSavedGame, null);
+            }
         }
     }
 }
