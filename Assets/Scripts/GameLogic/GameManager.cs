@@ -9,12 +9,12 @@ public class GameManager
     private PlayerData playerData;
 
     private GameManager(){
-        socialServices = FactorySocial.getSocialServices();
+        socialServices = FactorySocial.GetSocialServices();
         //Load from disk & cloud to compare 
         playerData = PlayerData.LoadFromDisk();
     }
 
-    public static GameManager getInstance(){
+    public static GameManager GetInstance(){
         if(gameManagerInstance==null){
             gameManagerInstance = new GameManager();
         }
@@ -22,8 +22,8 @@ public class GameManager
     }
 
     public void LoadCloudSave(){
-        if(isUserConnected()){ //Already handled inside Social methods, but game can implement its own way
-            socialServices.loadGame((ESocialCloudState loadState, byte[] genericGameSave) =>{
+        if(IsUserConnected()){ //Already handled inside Social methods, but game can implement its own way
+            socialServices.LoadGame((ESocialCloudState loadState, byte[] genericGameSave) =>{
                 if(loadState==ESocialCloudState.ESocialCloudState_Completed && genericGameSave.Length>0){
                     try{
                         PlayerData cloudPdata = PlayerData.BytesToObject(genericGameSave);
@@ -39,8 +39,8 @@ public class GameManager
         }
     }
     public void SaveCloud(){
-        if(isUserConnected()){
-            socialServices.saveGame(playerData,(ESocialCloudState saveState)=>{
+        if(IsUserConnected()){
+            socialServices.SaveGame(playerData,(ESocialCloudState saveState)=>{
                 if(saveState!=ESocialCloudState.ESocialCloudState_Completed){
                     //Handle failure cases
                 }
@@ -48,24 +48,24 @@ public class GameManager
         }
     }
 
-    public void increaseShipLevel(){
+    public void IncreaseShipLevel(){
         //Save
         playerData.playerLevel = playerData.playerLevel+1;
         playerData.SaveToDisk();
         SaveCloud();
     }
-    public int getShipLevel(){
+    public int GetShipLevel(){
         return playerData.playerLevel;
     }
-    public void connectUser(SocialCallbackAuthentication successResult){
-        socialServices.connectUser(successResult);
+    public void ConnectUser(SocialCallbackAuthentication successResult){
+        socialServices.ConnectUser(successResult);
     }
-    public void disconnectUser(){
-        socialServices.disconnectUser();
+    public void DisconnectUser(){
+        socialServices.DisconnectUser();
         //TODO remove user/state & everything
     }
-    public bool isUserConnected(){
-        return socialServices.isUserConnected();
+    public bool IsUserConnected(){
+        return socialServices.IsUserConnected();
     }
     
 }

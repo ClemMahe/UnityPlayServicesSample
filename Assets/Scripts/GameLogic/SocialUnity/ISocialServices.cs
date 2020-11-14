@@ -6,12 +6,12 @@ namespace SpaceScavengersSocial
    
     public interface ISocialServices
     {
-        void connectUser(SocialCallbackAuthentication successResult);
-        void disconnectUser();
-        bool isUserConnected();
+        void ConnectUser(SocialCallbackAuthentication successResult);
+        void DisconnectUser();
+        bool IsUserConnected();
 
-        void saveGame(ISaveGame objectToSave, SocialCallbackSaveGame saveDelegate);     
-        void loadGame(SocialCallbackLoadGame loadDelegate);
+        void SaveGame(ISaveGame objectToSave, SocialCallbackSaveGame saveDelegate);     
+        void LoadGame(SocialCallbackLoadGame loadDelegate);
     }
 
     public enum ESocialCloudState{

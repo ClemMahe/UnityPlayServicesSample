@@ -32,12 +32,10 @@ namespace SpaceScavengersSocial
             #endif
         }
         
-        public void connectUser(SocialCallbackAuthentication successResultCallback){
-            Debug.Log("SocialAndroid, Connection : Started"); 
+        public void ConnectUser(SocialCallbackAuthentication successResultCallback){
             #if UNITY_ANDROID
                 Social.Active.localUser.Authenticate((bool successResult) =>
                 {
-                    Debug.Log("SocialAndroid, ConnectionResult : "+successResult); 
                     successResultCallback.Invoke(successResult);
                 });
             #else
@@ -45,16 +43,16 @@ namespace SpaceScavengersSocial
             #endif  
         }
 
-        public void disconnectUser(){
+        public void DisconnectUser(){
             ((GooglePlayGames.PlayGamesPlatform) Social.Active).SignOut();
         }
 
-        public bool isUserConnected(){
+        public bool IsUserConnected(){
             return Social.Active.localUser.authenticated;
         }
 
-        public void saveGame(ISaveGame objectToSave, SocialCallbackSaveGame saveDelegate){
-            if(isUserConnected()){
+        public void SaveGame(ISaveGame objectToSave, SocialCallbackSaveGame saveDelegate){
+            if(IsUserConnected()){
                 //TODO Implement Async. StartCoroutine?UniTask?
                 ((PlayGamesPlatform)Social.Active).SavedGame.OpenWithAutomaticConflictResolution(CLOUD_SAVE_FILENAME, 
                     DataSource.ReadCacheOrNetwork, 
@@ -64,8 +62,8 @@ namespace SpaceScavengersSocial
                 saveDelegate.Invoke(ESocialCloudState.ESocialCloudState_NotAuthenticated);
             }
         }
-        public void loadGame(SocialCallbackLoadGame loadDelegate){
-            if(isUserConnected()){
+        public void LoadGame(SocialCallbackLoadGame loadDelegate){
+            if(IsUserConnected()){
                 //TODO Implement Async. StartCoroutine?UniTask?
                 ((PlayGamesPlatform)Social.Active).SavedGame.OpenWithAutomaticConflictResolution(CLOUD_SAVE_FILENAME,
                     DataSource.ReadCacheOrNetwork,

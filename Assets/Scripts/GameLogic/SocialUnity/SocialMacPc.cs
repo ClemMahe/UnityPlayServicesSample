@@ -10,24 +10,24 @@ namespace SpaceScavengersSocial
         public SocialMacPc(){
         }
 
-        public void connectUser(SocialCallbackAuthentication successResultCallback){
+        public void ConnectUser(SocialCallbackAuthentication successResultCallback){
             Debug.Log("SocialMacPc, Connection : No social network configured for PC/Mac");
             successResultCallback.Invoke(true); //Debug purpose -> true
         }
 
-        public void disconnectUser(){
+        public void DisconnectUser(){
             Debug.Log("SocialMacPc, Disconnection : No social network configured for PC/Mac");
         }
 
-        public bool isUserConnected(){
+        public bool IsUserConnected(){
             return true ; //Debug purpose -> true
         }
 
-        public void saveGame(ISaveGame objectToSave, SocialCallbackSaveGame saveDelegate){
+        public void SaveGame(ISaveGame objectToSave, SocialCallbackSaveGame saveDelegate){
             saveDelegate.Invoke(ESocialCloudState.ESocialCloudState_NotSupportedByPlatform);
         }
 
-        public void loadGame(SocialCallbackLoadGame loadDelegate){
+        public void LoadGame(SocialCallbackLoadGame loadDelegate){
             loadDelegate.Invoke(ESocialCloudState.ESocialCloudState_NotSupportedByPlatform, null);
         }
     }

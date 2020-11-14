@@ -14,24 +14,24 @@ public class DebugScreen : MonoBehaviour
     void Start()
     {
         //Listeners
-        btnPlayConnect.onClick.AddListener(connectPlayServices);
-        btnPlayDisconnect.onClick.AddListener(disconnectPlayServices);
-        btnIncreaseShipLevel.onClick.AddListener(increaseShipLevel);
-        gameManager = GameManager.getInstance();
+        btnPlayConnect.onClick.AddListener(ConnectPlayServices);
+        btnPlayDisconnect.onClick.AddListener(DisconnectPlayServices);
+        btnIncreaseShipLevel.onClick.AddListener(IncreaseShipLevel);
+        gameManager = GameManager.GetInstance();
         Init();
     }
 
     void Init(){      
-        updateButtonsState(gameManager.isUserConnected());
+        UpdateButtonsState(gameManager.IsUserConnected());
         gameManager.LoadCloudSave();
     }
 
     // Update is called once per frame
     void Update()
     {
-        int playerLevel = gameManager.getShipLevel();
+        int playerLevel = gameManager.GetShipLevel();
         string textToUpdate = "Player level : "+playerLevel+"\n";
-        if(gameManager.isUserConnected()){
+        if(gameManager.IsUserConnected()){
             textToUpdate+= "CloudState connected";
         }else{
             textToUpdate+= "CloudState disconnected";
@@ -40,28 +40,28 @@ public class DebugScreen : MonoBehaviour
         textPlayer.text = textToUpdate;
     }
 
-    public void connectPlayServices(){
+    public void ConnectPlayServices(){
         Debug.Log("connectPlayServices button called");
-        gameManager.connectUser((isConnected)=>{
+        gameManager.ConnectUser((isConnected)=>{
             if(isConnected){
-                updateButtonsState(true);
+                UpdateButtonsState(true);
                 gameManager.LoadCloudSave();
             }
         });
     }
 
-    public void disconnectPlayServices(){
+    public void DisconnectPlayServices(){
         Debug.Log("disconnectPlayServices button called");
-        gameManager.disconnectUser();
+        gameManager.DisconnectUser();
         //UpdateUI
-        updateButtonsState(false);
+        UpdateButtonsState(false);
     }
 
-    public void increaseShipLevel(){
-        gameManager.increaseShipLevel();
+    public void IncreaseShipLevel(){
+        gameManager.IncreaseShipLevel();
     }
 
-    public void updateButtonsState(bool isUserConnected){
+    public void UpdateButtonsState(bool isUserConnected){
         btnPlayConnect.interactable = !isUserConnected;
         btnPlayDisconnect.interactable = isUserConnected;
     }

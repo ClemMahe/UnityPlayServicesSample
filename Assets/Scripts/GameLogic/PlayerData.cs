@@ -11,10 +11,9 @@ public class PlayerData : ISaveGame
     public int playerLevel;
     public PlayerData(){
     }
-    public void increaseLevel(){
+    public void IncreaseLevel(){
         playerLevel++;
     }
-
 
     public bool MergeLocalWithCloud(PlayerData cloudGame){
         //In this version we will keep a simple version

@@ -4,7 +4,7 @@ namespace SpaceScavengersSocial
     {
         public static ISocialServices mInstance;
 
-        public static ISocialServices getSocialServices(){
+        public static ISocialServices GetSocialServices(){
             if(mInstance==null){
                 #if UNITY_ANDROID
                     mInstance = new SocialAndroid();
