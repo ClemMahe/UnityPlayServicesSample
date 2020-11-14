@@ -41,6 +41,8 @@ public class GameManager
                         bool mergeNeeded = playerData.MergeLocalWithCloud(cloudPdata);
                         if(mergeNeeded){
                             SaveCloud();
+                            //Leaderboard update
+                            socialServices.LeaderboardReportScoreForKey(LEADERBOARD_ID_LEVEL,playerData.playerLevel);
                         }
                     }catch(Exception){
                         //Handle failure cases
