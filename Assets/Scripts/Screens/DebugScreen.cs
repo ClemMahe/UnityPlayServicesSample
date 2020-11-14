@@ -8,7 +8,7 @@ public class DebugScreen : MonoBehaviour
 {
     public GameManager gameManager;
     
-    public Button btnPlayConnect, btnPlayDisconnect, btnIncreaseShipLevel, btnLeaderboard;
+    public Button btnPlayConnect, btnPlayDisconnect, btnIncreaseShipLevel, btnLeaderboard, btnShowAd;
     public Text textPlayer;
 
     void Start()
@@ -18,6 +18,7 @@ public class DebugScreen : MonoBehaviour
         btnPlayDisconnect.onClick.AddListener(DisconnectPlayServices);
         btnIncreaseShipLevel.onClick.AddListener(IncreaseShipLevel);
         btnLeaderboard.onClick.AddListener(ShowLeaderboard);
+        btnShowAd.onClick.AddListener(ShowAd);
         gameManager = GameManager.GetInstance();
         Init();
     }
@@ -68,6 +69,10 @@ public class DebugScreen : MonoBehaviour
 
     public void ShowLeaderboard(){
         gameManager.ShowLeaderBoard();
+    }
+
+    public void ShowAd(){
+        gameManager.ShowAd();
     }
 
     public void UpdateButtonsState(bool isUserConnected){

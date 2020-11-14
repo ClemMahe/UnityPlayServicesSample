@@ -5,15 +5,19 @@ using SpaceScavengersSocial;
 public class GameManager
 {
     public const String LEADERBOARD_ID_LEVEL = "CgkIwZWQ_-EDEAIQAQ";
+    public const String UNITY_APP_ADS_ID = "3902011";
 
     private static GameManager gameManagerInstance;
     private static ISocialServices socialServices;
+    private static AdsManager adsManager;
     private PlayerData playerData;
+
 
     private GameManager(){
         socialServices = FactorySocial.GetSocialServices();
         socialServices.LeaderboardSetDefaultKeyForUI(LEADERBOARD_ID_LEVEL);
         playerData = PlayerData.LoadFromDisk();
+        adsManager = AdsManager.GetInstance(UNITY_APP_ADS_ID);
     }
 
     public static GameManager GetInstance(){
@@ -74,6 +78,10 @@ public class GameManager
 
     public void ShowLeaderBoard(){
         socialServices.LeaderboardShowDefaultUI();
+    }
+
+    public void ShowAd(){
+        //Handle Ad
     }
     
 }
