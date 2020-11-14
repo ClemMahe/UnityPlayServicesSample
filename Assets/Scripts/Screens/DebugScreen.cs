@@ -22,10 +22,10 @@ public class DebugScreen : MonoBehaviour, IUnityAdsListener
         btnLeaderboard.onClick.AddListener(ShowLeaderboard);
         btnShowAd.onClick.AddListener(ShowAd);
         gameManager = GameManager.GetInstance();
-        Init();
+        InitGameManager();
     }
 
-    void Init(){    
+    void InitGameManager(){    
         //PlayServices
         gameManager.ConnectUser((isConnected)=>{
             if(isConnected){
@@ -40,16 +40,20 @@ public class DebugScreen : MonoBehaviour, IUnityAdsListener
     // Update is called once per frame
     void Update()
     {
-        int playerLevel = gameManager.GetShipLevel();
-        string textToUpdate = "Player level : "+playerLevel+"\n";
-        if(gameManager.IsUserConnected()){
-            textToUpdate+= "CloudState connected \n";
-        }else{
-            textToUpdate+= "CloudState disconnected \n";
+        if(gameManager!=null){
+            int playerLevel = gameManager.GetShipLevel();
+            string textToUpdate = "Player level : "+playerLevel+"\n";
+            if(gameManager.IsUserConnected()){
+                textToUpdate+= "CloudState connected \n";
+            }else{
+                textToUpdate+= "CloudState disconnected \n";
+            }
+            if(adState!=null){
+                textToUpdate += adState;
+            }
+            //Update text
+            textPlayer.text = textToUpdate;
         }
-        textToUpdate+=adState;
-        //Update text
-        textPlayer.text = textToUpdate;
     }
 
     public void ConnectPlayServicesBtnClicked(){

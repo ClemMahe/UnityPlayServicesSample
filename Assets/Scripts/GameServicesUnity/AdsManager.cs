@@ -3,7 +3,7 @@ using UnityEngine.Advertisements;
 
 namespace SpaceScavengersSocial
 {
-    public class AdsManager : MonoBehaviour
+    public class AdsManager
     {
         private static AdsManager mInstance;
         private static string mGameId;
