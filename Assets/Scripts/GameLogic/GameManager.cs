@@ -27,7 +27,10 @@ public class GameManager
                 if(loadState==ESocialCloudState.ESocialCloudState_Completed && genericGameSave.Length>0){
                     try{
                         PlayerData cloudPdata = PlayerData.BytesToObject(genericGameSave);
-                        playerData.MergeLocalWithCloud(cloudPdata);
+                        bool mergeNeeded = playerData.MergeLocalWithCloud(cloudPdata);
+                        if(mergeNeeded){
+                            SaveCloud();
+                        }
                     }catch(Exception){
                         //Handle failure cases
                     }

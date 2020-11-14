@@ -20,6 +20,7 @@ public class PlayerData : ISaveGame
         //In this version we will keep a simple version
         bool mergeNeeded = false;
         if(this.playerLevel < cloudGame.playerLevel){
+            mergeNeeded = true;
             this.playerLevel = cloudGame.playerLevel;   
         }
         return mergeNeeded;
