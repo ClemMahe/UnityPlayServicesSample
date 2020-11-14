@@ -1,11 +1,17 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.Advertisements;
 using SpaceScavengersSocial;
 
 public class GameManager
 {
     public const String LEADERBOARD_ID_LEVEL = "CgkIwZWQ_-EDEAIQAQ";
-    public const String UNITY_APP_ADS_ID = "3902011";
+
+    #if UNITY_ANDROID
+        public const String UNITY_APP_ADS_ID = "3902011";
+    #elif UNITY_IOS
+        public const String UNITY_APP_ADS_ID = "3902010";
+    #endif
 
     private static GameManager gameManagerInstance;
     private static ISocialServices socialServices;
@@ -17,7 +23,6 @@ public class GameManager
         socialServices = FactorySocial.GetSocialServices();
         socialServices.LeaderboardSetDefaultKeyForUI(LEADERBOARD_ID_LEVEL);
         playerData = PlayerData.LoadFromDisk();
-        adsManager = AdsManager.GetInstance(UNITY_APP_ADS_ID);
     }
 
     public static GameManager GetInstance(){
@@ -80,8 +85,15 @@ public class GameManager
         socialServices.LeaderboardShowDefaultUI();
     }
 
+    public void InitAdsManager(IUnityAdsListener listener){
+        adsManager = AdsManager.GetInstance(UNITY_APP_ADS_ID, listener);
+    }
     public void ShowAd(){
-        //Handle Ad
+        if(adsManager!=null){
+            adsManager.ShowRewardedVideo();
+        }else{
+            throw new Exception("Ads Manager not initialized");
+        }
     }
     
 }

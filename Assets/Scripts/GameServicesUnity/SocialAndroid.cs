@@ -34,7 +34,9 @@ namespace SpaceScavengersSocial
         }
 
         public void LeaderboardSetDefaultKeyForUI(string identifierDefaultLeaderboard){
-            ((PlayGamesPlatform) Social.Active).SetDefaultLeaderboardForUI(identifierDefaultLeaderboard);
+            #if UNITY_ANDROID
+                ((PlayGamesPlatform) Social.Active).SetDefaultLeaderboardForUI(identifierDefaultLeaderboard);
+            #endif
         }
 
         public void ConnectUser(SocialCallbackAuthentication successResultCallback, bool silent){
@@ -57,21 +59,26 @@ namespace SpaceScavengersSocial
         }
 
         public void DisconnectUser(){
-            ((GooglePlayGames.PlayGamesPlatform) Social.Active).SignOut();
+            #if UNITY_ANDROID
+                ((GooglePlayGames.PlayGamesPlatform) Social.Active).SignOut();
+            #endif
         }
 
         public bool IsUserConnected(){
-            //PlayGamesPlatform.Instance.localUser.authenticated
-            return playGamesPlatform.IsAuthenticated();
+            return Social.localUser.authenticated;
         }
 
         public void SaveGame(ISaveGame objectToSave, SocialCallbackSaveGame saveDelegate){
             if(IsUserConnected()){
-                //TODO Implement Async. StartCoroutine?UniTask?
-                ((PlayGamesPlatform)Social.Active).SavedGame.OpenWithAutomaticConflictResolution(CLOUD_SAVE_FILENAME, 
-                    DataSource.ReadCacheOrNetwork, 
-                    ConflictResolutionStrategy.UseLongestPlaytime, 
-                    (SavedGameRequestStatus s, ISavedGameMetadata m)=> SaveGameProcessing(s,m,objectToSave,saveDelegate));
+                #if UNITY_ANDROID
+                    //TODO Implement Async. StartCoroutine?UniTask?
+                    ((PlayGamesPlatform)Social.Active).SavedGame.OpenWithAutomaticConflictResolution(CLOUD_SAVE_FILENAME, 
+                        DataSource.ReadCacheOrNetwork, 
+                        ConflictResolutionStrategy.UseLongestPlaytime, 
+                        (SavedGameRequestStatus s, ISavedGameMetadata m)=> SaveGameProcessing(s,m,objectToSave,saveDelegate));
+                #else
+                    saveDelegate.Invoke(ESocialCloudState.ESocialCloudState_Failure_CannotSaveGame);
+                #endif
             }else{
                 saveDelegate.Invoke(ESocialCloudState.ESocialCloudState_NotAuthenticated);
             }
@@ -79,10 +86,14 @@ namespace SpaceScavengersSocial
         public void LoadGame(SocialCallbackLoadGame loadDelegate){
             if(IsUserConnected()){
                 //TODO Implement Async. StartCoroutine?UniTask?
-                ((PlayGamesPlatform)Social.Active).SavedGame.OpenWithAutomaticConflictResolution(CLOUD_SAVE_FILENAME,
-                    DataSource.ReadCacheOrNetwork,
-                    ConflictResolutionStrategy.UseLongestPlaytime,
-                    (SavedGameRequestStatus s, ISavedGameMetadata m)=> LoadGameProcessing(s,m,loadDelegate));
+                #if UNITY_ANDROID
+                    ((PlayGamesPlatform)Social.Active).SavedGame.OpenWithAutomaticConflictResolution(CLOUD_SAVE_FILENAME,
+                        DataSource.ReadCacheOrNetwork,
+                        ConflictResolutionStrategy.UseLongestPlaytime,
+                        (SavedGameRequestStatus s, ISavedGameMetadata m)=> LoadGameProcessing(s,m,loadDelegate));
+                #else
+                    saveDelegate.Invoke(ESocialCloudState.ESocialCloudState_Failure_CannotLoadGame);
+                #endif
             }else{
                 loadDelegate.Invoke(ESocialCloudState.ESocialCloudState_NotAuthenticated,null);
             }
@@ -90,40 +101,48 @@ namespace SpaceScavengersSocial
 
         private void SaveGameProcessing(SavedGameRequestStatus status, ISavedGameMetadata metaData, 
             ISaveGame game, SocialCallbackSaveGame saveResult){
-            if (status == SavedGameRequestStatus.Success){
-                byte[] data = game.ObjectToBytes();
-                SavedGameMetadataUpdate.Builder builder = new SavedGameMetadataUpdate.Builder();
-                SavedGameMetadataUpdate updatedMetadata = builder.Build();
-                ((PlayGamesPlatform)Social.Active).SavedGame.CommitUpdate(metaData, updatedMetadata, data,
-                    //Lamda Result
-                    (SavedGameRequestStatus statusCommit, ISavedGameMetadata metaDataCommit)=>{
-                        if(statusCommit == SavedGameRequestStatus.Success){
-                            saveResult.Invoke(ESocialCloudState.ESocialCloudState_Completed);
-                        }else{
-                            saveResult.Invoke(ESocialCloudState.ESocialCloudState_Failure_CannotSaveGame);
-                        }
-                    });
-            }else{
+            #if UNITY_ANDROID
+                if (status == SavedGameRequestStatus.Success){
+                    byte[] data = game.ObjectToBytes();
+                    SavedGameMetadataUpdate.Builder builder = new SavedGameMetadataUpdate.Builder();
+                    SavedGameMetadataUpdate updatedMetadata = builder.Build();
+                    ((PlayGamesPlatform)Social.Active).SavedGame.CommitUpdate(metaData, updatedMetadata, data,
+                        //Lamda Result
+                        (SavedGameRequestStatus statusCommit, ISavedGameMetadata metaDataCommit)=>{
+                            if(statusCommit == SavedGameRequestStatus.Success){
+                                saveResult.Invoke(ESocialCloudState.ESocialCloudState_Completed);
+                            }else{
+                                saveResult.Invoke(ESocialCloudState.ESocialCloudState_Failure_CannotSaveGame);
+                            }
+                        });
+                }else{
+                    saveResult.Invoke(ESocialCloudState.ESocialCloudState_Failure_CannotOpenSavedGame);
+                }
+            #else
                 saveResult.Invoke(ESocialCloudState.ESocialCloudState_Failure_CannotOpenSavedGame);
-            }
+            #endif
         }
 
         private void LoadGameProcessing(SavedGameRequestStatus status, ISavedGameMetadata metaData, 
            SocialCallbackLoadGame loadResult){
-            if (status == SavedGameRequestStatus.Success){
-                ((PlayGamesPlatform)Social.Active).SavedGame.ReadBinaryData(metaData, 
-                    //Lamda Result
-                    (SavedGameRequestStatus statusReading, byte[] bytes)=>{
-                        if(statusReading == SavedGameRequestStatus.Success){
-                            loadResult.Invoke(ESocialCloudState.ESocialCloudState_Completed, bytes);
-                        }else{
-                            loadResult.Invoke(ESocialCloudState.ESocialCloudState_Failure_CannotLoadGame, null);
+            #if UNITY_ANDROID
+                if (status == SavedGameRequestStatus.Success){
+                    ((PlayGamesPlatform)Social.Active).SavedGame.ReadBinaryData(metaData, 
+                        //Lamda Result
+                        (SavedGameRequestStatus statusReading, byte[] bytes)=>{
+                            if(statusReading == SavedGameRequestStatus.Success){
+                                loadResult.Invoke(ESocialCloudState.ESocialCloudState_Completed, bytes);
+                            }else{
+                                loadResult.Invoke(ESocialCloudState.ESocialCloudState_Failure_CannotLoadGame, null);
+                            }
                         }
-                    }
-                );
-            }else{
+                    );
+                }else{
+                    loadResult.Invoke(ESocialCloudState.ESocialCloudState_Failure_CannotOpenSavedGame, null);
+                }
+            #else 
                 loadResult.Invoke(ESocialCloudState.ESocialCloudState_Failure_CannotOpenSavedGame, null);
-            }
+            #endif
         }
 
         public void LeaderboardReportScoreForKey(string leaderboardKey, long value){

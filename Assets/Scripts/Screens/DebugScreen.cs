@@ -3,13 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using SpaceScavengersSocial;
+using UnityEngine.Advertisements;
 
-public class DebugScreen : MonoBehaviour
+public class DebugScreen : MonoBehaviour, IUnityAdsListener
 {
     public GameManager gameManager;
     
     public Button btnPlayConnect, btnPlayDisconnect, btnIncreaseShipLevel, btnLeaderboard, btnShowAd;
     public Text textPlayer;
+    public string adState;
 
     void Start()
     {
@@ -24,12 +26,15 @@ public class DebugScreen : MonoBehaviour
     }
 
     void Init(){    
+        //PlayServices
         gameManager.ConnectUser((isConnected)=>{
             if(isConnected){
                 UpdateButtonsState(true);
                 gameManager.LoadCloudSave();
             }
         },true);
+        //Ads manager
+        gameManager.InitAdsManager(this);
     }
 
     // Update is called once per frame
@@ -38,10 +43,11 @@ public class DebugScreen : MonoBehaviour
         int playerLevel = gameManager.GetShipLevel();
         string textToUpdate = "Player level : "+playerLevel+"\n";
         if(gameManager.IsUserConnected()){
-            textToUpdate+= "CloudState connected";
+            textToUpdate+= "CloudState connected \n";
         }else{
-            textToUpdate+= "CloudState disconnected";
+            textToUpdate+= "CloudState disconnected \n";
         }
+        textToUpdate+=adState;
         //Update text
         textPlayer.text = textToUpdate;
     }
@@ -80,6 +86,26 @@ public class DebugScreen : MonoBehaviour
         btnPlayDisconnect.interactable = isUserConnected;
         btnLeaderboard.interactable = isUserConnected;
     }
+
+    //Ads methods
+    public void OnUnityAdsReady (string placementId) {
+        btnShowAd.interactable=true;
+    }
+    public void OnUnityAdsDidFinish (string placementId, ShowResult showResult) {
+        if (showResult == ShowResult.Finished) {
+            adState = "Ad Completed";
+        } else if (showResult == ShowResult.Skipped) {
+            adState = "Ad Skipped";
+        } else if (showResult == ShowResult.Failed) {
+            adState = "Ad Failed";
+        }
+    }
+    public void OnUnityAdsDidError (string message) {
+        adState = "AdError: "+message;
+    }
+    public void OnUnityAdsDidStart (string placementId) {
+        adState = "Ad Started";
+    } 
     
 
 }

@@ -398,7 +398,9 @@ MonoBehaviour:
   btnPlayDisconnect: {fileID: 862753113}
   btnIncreaseShipLevel: {fileID: 189066512}
   btnLeaderboard: {fileID: 1375441944}
+  btnShowAd: {fileID: 0}
   textPlayer: {fileID: 1681078494}
+  adState: 
 --- !u!1001 &410716996
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -526,7 +528,7 @@ PrefabInstance:
     - target: {fileID: 7309461920876716359, guid: 4ef0fa19bcf8a416bbeabee12dbe77a6,
         type: 3}
       propertyPath: m_Interactable
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4ef0fa19bcf8a416bbeabee12dbe77a6, type: 3}
