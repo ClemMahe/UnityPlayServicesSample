@@ -4,12 +4,15 @@ using SpaceScavengersSocial;
 
 public class GameManager
 {
+    public const String LEADERBOARD_ID_LEVEL = "CgkIwZWQ_-EDEAIQAQ";
+
     private static GameManager gameManagerInstance;
     private static ISocialServices socialServices;
     private PlayerData playerData;
 
     private GameManager(){
         socialServices = FactorySocial.GetSocialServices();
+        socialServices.LeaderboardSetDefaultKeyForUI(LEADERBOARD_ID_LEVEL);
         //Load from disk & cloud to compare 
         playerData = PlayerData.LoadFromDisk();
     }
@@ -53,6 +56,8 @@ public class GameManager
         playerData.playerLevel = playerData.playerLevel+1;
         playerData.SaveToDisk();
         SaveCloud();
+        //Leaderboard update
+        socialServices.LeaderboardReportScoreForKey(LEADERBOARD_ID_LEVEL,playerData.playerLevel);
     }
     public int GetShipLevel(){
         return playerData.playerLevel;
@@ -66,6 +71,10 @@ public class GameManager
     }
     public bool IsUserConnected(){
         return socialServices.IsUserConnected();
+    }
+
+    public void ShowLeaderBoard(){
+        socialServices.LeaderboardShowDefaultUI();
     }
     
 }

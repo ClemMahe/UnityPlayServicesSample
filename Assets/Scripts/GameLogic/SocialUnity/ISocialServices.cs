@@ -12,6 +12,9 @@ namespace SpaceScavengersSocial
 
         void SaveGame(ISaveGame objectToSave, SocialCallbackSaveGame saveDelegate);     
         void LoadGame(SocialCallbackLoadGame loadDelegate);
+        void LeaderboardSetDefaultKeyForUI(string identifierDefaultLeaderboard);
+        void LeaderboardReportScoreForKey(string leaderboardKey, long value);
+        void LeaderboardShowDefaultUI();
     }
 
     public enum ESocialCloudState{

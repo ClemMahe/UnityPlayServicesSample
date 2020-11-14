@@ -29,9 +29,14 @@ namespace SpaceScavengersSocial
                 PlayGamesPlatform.InitializeInstance(config);
                 PlayGamesPlatform.DebugLogEnabled = true;
                 playGamesPlatform = PlayGamesPlatform.Activate();
+                //LeaderBoard
             #endif
         }
-        
+
+        public void LeaderboardSetDefaultKeyForUI(string identifierDefaultLeaderboard){
+            ((PlayGamesPlatform) Social.Active).SetDefaultLeaderboardForUI(identifierDefaultLeaderboard);
+        }
+
         public void ConnectUser(SocialCallbackAuthentication successResultCallback){
             #if UNITY_ANDROID
                 Social.Active.localUser.Authenticate((bool successResult) =>
@@ -109,6 +114,19 @@ namespace SpaceScavengersSocial
                 );
             }else{
                 loadResult.Invoke(ESocialCloudState.ESocialCloudState_Failure_CannotOpenSavedGame, null);
+            }
+        }
+
+        public void LeaderboardReportScoreForKey(string leaderboardKey, long value){
+            if(IsUserConnected()){
+                Social.ReportScore(value, leaderboardKey, (bool success) => {
+                    //For we don't handle failures scenarios
+                });
+            }
+        }
+        public void LeaderboardShowDefaultUI(){
+            if (IsUserConnected()){
+                Social.ShowLeaderboardUI();
             }
         }
     }
