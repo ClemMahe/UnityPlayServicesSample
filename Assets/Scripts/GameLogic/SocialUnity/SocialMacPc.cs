@@ -10,7 +10,7 @@ namespace SpaceScavengersSocial
         public SocialMacPc(){
         }
 
-        public void ConnectUser(SocialCallbackAuthentication successResultCallback){
+        public void ConnectUser(SocialCallbackAuthentication successResultCallback, bool silent){
             Debug.Log("SocialMacPc, Connection : Not implemented so far on PC/Mac");
             successResultCallback.Invoke(false);
         }

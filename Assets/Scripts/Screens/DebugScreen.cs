@@ -14,7 +14,7 @@ public class DebugScreen : MonoBehaviour
     void Start()
     {
         //Listeners
-        btnPlayConnect.onClick.AddListener(ConnectPlayServices);
+        btnPlayConnect.onClick.AddListener(ConnectPlayServicesBtnClicked);
         btnPlayDisconnect.onClick.AddListener(DisconnectPlayServices);
         btnIncreaseShipLevel.onClick.AddListener(IncreaseShipLevel);
         btnLeaderboard.onClick.AddListener(ShowLeaderboard);
@@ -22,9 +22,13 @@ public class DebugScreen : MonoBehaviour
         Init();
     }
 
-    void Init(){      
-        UpdateButtonsState(gameManager.IsUserConnected());
-        gameManager.LoadCloudSave();
+    void Init(){    
+        gameManager.ConnectUser((isConnected)=>{
+            if(isConnected){
+                UpdateButtonsState(true);
+                gameManager.LoadCloudSave();
+            }
+        },true);
     }
 
     // Update is called once per frame
@@ -41,14 +45,14 @@ public class DebugScreen : MonoBehaviour
         textPlayer.text = textToUpdate;
     }
 
-    public void ConnectPlayServices(){
+    public void ConnectPlayServicesBtnClicked(){
         Debug.Log("connectPlayServices button called");
         gameManager.ConnectUser((isConnected)=>{
             if(isConnected){
                 UpdateButtonsState(true);
                 gameManager.LoadCloudSave();
             }
-        });
+        },false); //Not silently
     }
 
     public void DisconnectPlayServices(){

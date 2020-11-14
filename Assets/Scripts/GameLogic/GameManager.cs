@@ -13,7 +13,6 @@ public class GameManager
     private GameManager(){
         socialServices = FactorySocial.GetSocialServices();
         socialServices.LeaderboardSetDefaultKeyForUI(LEADERBOARD_ID_LEVEL);
-        //Load from disk & cloud to compare 
         playerData = PlayerData.LoadFromDisk();
     }
 
@@ -62,8 +61,8 @@ public class GameManager
     public int GetShipLevel(){
         return playerData.playerLevel;
     }
-    public void ConnectUser(SocialCallbackAuthentication successResult){
-        socialServices.ConnectUser(successResult);
+    public void ConnectUser(SocialCallbackAuthentication successResult, bool silentMode){
+        socialServices.ConnectUser(successResult, silentMode);
     }
     public void DisconnectUser(){
         socialServices.DisconnectUser();

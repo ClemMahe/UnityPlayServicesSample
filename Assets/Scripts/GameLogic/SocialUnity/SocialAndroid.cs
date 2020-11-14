@@ -37,12 +37,20 @@ namespace SpaceScavengersSocial
             ((PlayGamesPlatform) Social.Active).SetDefaultLeaderboardForUI(identifierDefaultLeaderboard);
         }
 
-        public void ConnectUser(SocialCallbackAuthentication successResultCallback){
+        public void ConnectUser(SocialCallbackAuthentication successResultCallback, bool silent){
             #if UNITY_ANDROID
-                Social.Active.localUser.Authenticate((bool successResult) =>
-                {
-                    successResultCallback.Invoke(successResult);
-                });
+                if(!silent){
+                    PlayGamesPlatform.Instance.Authenticate(SignInInteractivity.CanPromptAlways, (result) =>{
+                        if(result==SignInStatus.Success){
+                            successResultCallback.Invoke(true);
+                        }
+                    });
+                }else{
+                    //Silent login
+                    PlayGamesPlatform.Instance.Authenticate ((bool success) => {
+                        successResultCallback.Invoke(success);
+                    }, true);
+                }
             #else
                 throw new Exception("Platform not valid");
             #endif  
@@ -53,7 +61,8 @@ namespace SpaceScavengersSocial
         }
 
         public bool IsUserConnected(){
-            return Social.Active.localUser.authenticated;
+            //PlayGamesPlatform.Instance.localUser.authenticated
+            return playGamesPlatform.IsAuthenticated();
         }
 
         public void SaveGame(ISaveGame objectToSave, SocialCallbackSaveGame saveDelegate){

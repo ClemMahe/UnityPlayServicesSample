@@ -6,7 +6,7 @@ namespace SpaceScavengersSocial
    
     public interface ISocialServices
     {
-        void ConnectUser(SocialCallbackAuthentication successResult);
+        void ConnectUser(SocialCallbackAuthentication successResult, bool silent);
         void DisconnectUser();
         bool IsUserConnected();
 
