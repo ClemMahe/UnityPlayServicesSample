@@ -92,7 +92,7 @@ namespace GameServicesUnity
                         ConflictResolutionStrategy.UseLongestPlaytime,
                         (SavedGameRequestStatus s, ISavedGameMetadata m)=> LoadGameProcessing(s,m,loadDelegate));
                 #else
-                    saveDelegate.Invoke(ESocialCloudState.ESocialCloudState_Failure_CannotLoadGame);
+                    loadDelegate.Invoke(ESocialCloudState.ESocialCloudState_Failure_CannotLoadGame);
                 #endif
             }else{
                 loadDelegate.Invoke(ESocialCloudState.ESocialCloudState_NotAuthenticated,null);
