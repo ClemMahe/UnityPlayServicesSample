@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Advertisements;
 
-namespace SpaceScavengersSocial
+namespace GameServicesUnity
 {
     public class AdsManager
     {

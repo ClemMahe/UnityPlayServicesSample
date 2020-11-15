@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 using UnityEngine.Advertisements;
-using SpaceScavengersSocial;
+using GameServicesUnity;
 
 public class GameManager
 {

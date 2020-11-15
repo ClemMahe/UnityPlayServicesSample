@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using SpaceScavengersSocial;
+using GameServicesUnity;
 using UnityEngine.Advertisements;
 
 public class DebugScreen : MonoBehaviour, IUnityAdsListener

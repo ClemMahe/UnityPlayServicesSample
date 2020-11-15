@@ -8,7 +8,7 @@ using UnityEngine.SocialPlatforms;
     using GooglePlayGames.BasicApi.SavedGame;
 #endif
 
-namespace SpaceScavengersSocial
+namespace GameServicesUnity
 {
     public  class SocialAndroid : ISocialServices
     {

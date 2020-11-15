@@ -1,4 +1,4 @@
-namespace SpaceScavengersSocial
+namespace GameServicesUnity
 {
     public static class FactorySocial
     {

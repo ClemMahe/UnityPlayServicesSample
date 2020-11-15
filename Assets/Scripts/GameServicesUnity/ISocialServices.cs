@@ -1,4 +1,4 @@
-namespace SpaceScavengersSocial
+namespace GameServicesUnity
 {
     public delegate void SocialCallbackAuthentication(bool successResult);
     public delegate void SocialCallbackSaveGame(ESocialCloudState saveState);

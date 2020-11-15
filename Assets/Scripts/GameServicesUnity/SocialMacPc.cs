@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SocialPlatforms;
 
-namespace SpaceScavengersSocial
+namespace GameServicesUnity
 {
     public class SocialMacPc : ISocialServices
     {
